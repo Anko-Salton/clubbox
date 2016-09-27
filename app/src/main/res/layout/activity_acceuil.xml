@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.clubbox.clubbox.Acceuil">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/h_claire_2"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.clubbox.clubbox.Acceuil"
+        tools:showIn="@layout/activity_acceuil">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/soccer"
+            android:gravity="center"
+            android:text="@string/title_action_bar"
+            android:textColor="#fff"
+            android:textSize="30sp"
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="20dp">
+
+            <ImageButton
+                android:id="@+id/btnFacebookConnect"
+                android:contentDescription="@string/descriptionFbIcon"
+                android:layout_height="wrap_content"
+                android:src="@drawable/facebook_box"
+                android:background="@drawable/h_claire_2"
+                android:layout_width="wrap_content"
+                android:layout_marginRight="70dp"/>
+
+            <ImageButton
+                android:id="@+id/btnGoogleConnect"
+                android:contentDescription="@string/descriptionGoogleIcon"
+                android:layout_height="wrap_content"
+                android:src="@drawable/google_plus_box"
+                android:background="@drawable/h_claire_2"
+                android:layout_width="wrap_content" />
+
+        </LinearLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/txtLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/email"
+                android:textColor="#000"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/txtPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/mot_de_passe"
+                android:inputType="textPassword"
+                android:textColor="#000"/>
+        </android.support.design.widget.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/connect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:allowUndo="true"
+            android:background="@drawable/h_foncee_2"
+            android:padding="35dp"
+            android:text="@string/se_connecter"
+            tools:targetApi="m" />
+
+        <Button
+            android:id="@+id/passForgotten"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:allowUndo="true"
+            android:background="@drawable/h_foncee_2"
+            android:padding="35dp"
+            android:text="@string/mot_de_passe_oubli"
+            tools:targetApi="m" />
+
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

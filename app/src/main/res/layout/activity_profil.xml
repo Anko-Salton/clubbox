@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/h_foncee_2"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <ImageButton
+                    android:id="@+id/navButton"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="80dp"
+                    android:background="@drawable/h_foncee_2"
+                    android:src="@drawable/menu" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/soccer"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/Profil"
+                    android:textColor="#fff"
+                    android:textSize="30sp" />
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:background="@drawable/h_claire_2"
+                android:scrollbars="vertical">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:id="@+id/imgProfil"
+                    android:src="@drawable/account"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Adresse mail :"
+                    android:gravity="center_horizontal"
+                    android:textColor="#fff"/>
+                <EditText
+                    android:id="@+id/txtMail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#fff"
+                    android:inputType="textEmailAddress"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mot de passe :"
+                    android:gravity="center_horizontal"
+                    android:textColor="#fff"/>
+                <EditText
+                    android:id="@+id/txtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#fff"
+                    android:inputType="textPassword"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Confirmer le mot de passe :"
+                    android:gravity="center_horizontal"
+                    android:textColor="#fff"/>
+                <EditText
+                    android:id="@+id/txtConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#fff"
+                    android:inputType="textPassword"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nom :"
+                    android:gravity="center_horizontal"
+                    android:textColor="#fff"/>
+                <EditText
+                    android:id="@+id/txtName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#fff"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Prénom :"
+                    android:gravity="center_horizontal"
+                    android:textColor="#fff"/>
+                <EditText
+                    android:id="@+id/txtForname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#fff"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date de naissance :"
+                    android:gravity="center_horizontal"
+                    android:textColor="#fff"/>
+                <EditText
+                    android:id="@+id/birthdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#fff"
+                    android:inputType="date"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Numéro de téléphone :"
+                    android:gravity="center_horizontal"
+                    android:textColor="#fff"/>
+                <EditText
+                    android:id="@+id/txtPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#fff"
+                    android:inputType="phone"/>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:gravity="center_horizontal">
+
+                    <Button
+                        android:id="@+id/btnAnnuler"
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"
+                        android:padding="5dp"
+                        android:layout_margin="10dp"
+                        android:text="Annuler"
+                        android:background="@drawable/h_foncee_2"/>
+
+                    <Button
+                        android:id="@+id/btnValider"
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"
+                        android:padding="5dp"
+                        android:layout_margin="10dp"
+                        android:text="Valider"
+                        android:background="@drawable/h_foncee_2"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+    </android.support.design.widget.CoordinatorLayout>
+    <LinearLayout
+        android:id="@+id/menuLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/h_foncee_2"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.11"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="@string/menu"
+            android:textColor="#fff"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/nav_accueil"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.11"
+            android:background="@drawable/h_claire_2"
+            android:drawableLeft="@drawable/home"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="@string/accueil"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/nav_result"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.11"
+            android:background="@drawable/h_foncee_2"
+            android:drawableLeft="@drawable/soccer"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="@string/resultat"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/nav_rank"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.11"
+            android:background="@drawable/h_claire_2"
+            android:drawableLeft="@drawable/trophy"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="@string/classement"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/nav_messages"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.11"
+            android:background="@drawable/h_foncee_2"
+            android:drawableLeft="@drawable/message_reply_text"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="@string/messages"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/nav_event"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.11"
+            android:background="@drawable/h_claire_2"
+            android:drawableLeft="@drawable/calendar"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="@string/event"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/nav_convocations"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.11"
+            android:background="@drawable/h_foncee_2"
+            android:drawableLeft="@drawable/calendar_check"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="@string/Convocations"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/nav_profil"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.11"
+            android:background="@drawable/h_claire_2"
+            android:drawableLeft="@drawable/account"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="@string/GestionProfil"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/nav_close"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.11"
+            android:background="@drawable/h_foncee_2"
+            android:drawableLeft="@drawable/close"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="@string/FermerMenu"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
