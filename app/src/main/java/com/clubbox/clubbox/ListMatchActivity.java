@@ -60,10 +60,10 @@ public class ListMatchActivity extends AppCompatActivity {
         Division d1 = new Division(0, "Div 1", dept1);
         Team th = new Team(0, c1, "Colmar", d1);
         Team ta = new Team(0, c1, "Strasbourg", d1);
-        for (int i = 0; i < 25; i++) {
+        /*for (int i = 0; i < 25; i++) {
             Match match = new Match(i, new Date(), "16H", "Colmar city", "Rue du stade", (long) 68000, "Colmar", th, ta, 3, 0, "Résumé de l'équipe à domicile, après un but maginfique de l'attaquant blabla", "Résumé de l'équipe à l'extérieur, après un but maginfique de l'attaquant blabla");
             list.add(match);
-        }
+        }*/
 
         if (list.size() > 0) {
             mListView.setupView(list);

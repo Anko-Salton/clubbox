@@ -53,7 +53,7 @@ public class MatchItemView extends LinearLayout {
     }
 
     public void setupView(Match match) {
-        DateMatch.setText(match.getDate().toString());
+        DateMatch.setText(match.getDatetime());
         teamH.setText(match.getTeamHome().getName());
         score.setText(match.getScoreHome().toString() + " - " + match.getScoreAway().toString());
         teamA.setText(match.getTeamAway().getName());

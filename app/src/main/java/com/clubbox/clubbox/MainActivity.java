@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
             TextView teamAway = (TextView) findViewById(R.id.equipe_b_last);
             TextView scoreHome = (TextView) findViewById(R.id.score_a_last);
             TextView scoreAway = (TextView) findViewById(R.id.score_b_last);
-            //teamHome.setText("");
-            //teamAway.setText("");
+            teamHome.setText(lastMatch.getTeamHome().getName());
+            teamAway.setText(lastMatch.getTeamAway().getName());
             scoreHome.setText(lastMatch.getScoreHome());
             scoreAway.setText(lastMatch.getScoreAway());
         }

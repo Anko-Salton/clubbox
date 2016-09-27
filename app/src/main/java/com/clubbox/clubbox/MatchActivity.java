@@ -66,7 +66,7 @@ public class MatchActivity extends AppCompatActivity {
 
         //On récupère le match sur lequel l'utilisateur a cliqué précédement.
         Match theMatch = (Match) b.getSerializable("theMatch");
-        matchDate.setText(theMatch.getDate().toString());
+        matchDate.setText(theMatch.getDatetime());
         matchTeamH.setText(theMatch.getTeamHome().getName());
         matchTeamA.setText(theMatch.getTeamAway().getName());
         matchScore.setText(theMatch.getScoreHome() + " - " + theMatch.getScoreAway());
