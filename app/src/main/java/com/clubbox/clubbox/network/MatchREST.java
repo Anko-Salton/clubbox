@@ -18,5 +18,9 @@ public interface MatchREST {
 
     @GET("club/{id}/lastMatch")
     Call<Match> getLastMatchByClubId(@Path("id") Integer id);
+    @GET("club/{id}/allMatch")
+    Call<Match> getAllMatchByClubId(@Path("id") Integer id);
+    @GET("club/{id}/nextMatch")
+    Call<Match> getNextMatchByClubId(@Path("id") Integer id);
 
 }
