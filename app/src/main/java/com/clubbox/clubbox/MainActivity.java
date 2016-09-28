@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
             TextView scoreAway = (TextView) findViewById(R.id.score_b_last);
             teamHome.setText(lastMatch.getTeamHome().getName());
             teamAway.setText(lastMatch.getTeamAway().getName());
-            scoreHome.setText(lastMatch.getScoreHome());
-            scoreAway.setText(lastMatch.getScoreAway());
+            scoreHome.setText(String.valueOf(lastMatch.getScoreHome()));
+            scoreAway.setText(String.valueOf(lastMatch.getScoreAway()));
         }
 
         //Eléments du menu
