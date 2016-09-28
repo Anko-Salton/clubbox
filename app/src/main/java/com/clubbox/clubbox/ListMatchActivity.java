@@ -15,9 +15,16 @@ import com.clubbox.clubbox.model.Departement;
 import com.clubbox.clubbox.model.Division;
 import com.clubbox.clubbox.model.Match;
 import com.clubbox.clubbox.model.Team;
+import com.clubbox.clubbox.model.User;
+import com.clubbox.clubbox.network.MatchREST;
+import com.clubbox.clubbox.propertie.Properties;
 import com.clubbox.clubbox.views.MatchListView;
 
 import java.util.Date;
+import java.util.List;
+
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 
 public class ListMatchActivity extends AppCompatActivity {
 
@@ -54,7 +61,7 @@ public class ListMatchActivity extends AppCompatActivity {
 
         //On crée des données afin de tester l'affichage et la création d'objet
         //TODO: récupérer les données depuis la base de donnée.
-        Match.List list = new Match.List();
+        //Match.List list = new Match.List();
         Club c1 = new Club((long) 0);
         Departement dept1 = new Departement(68, "Haut-rhin");
         Division d1 = new Division(0, "Div 1", dept1);
@@ -64,10 +71,22 @@ public class ListMatchActivity extends AppCompatActivity {
             Match match = new Match(i, new Date(), "16H", "Colmar city", "Rue du stade", (long) 68000, "Colmar", th, ta, 3, 0, "Résumé de l'équipe à domicile, après un but maginfique de l'attaquant blabla", "Résumé de l'équipe à l'extérieur, après un but maginfique de l'attaquant blabla");
             list.add(match);
         }*/
-
-        if (list.size() > 0) {
-            mListView.setupView(list);
+        MatchREST matchREST = new Retrofit.Builder()
+                .baseUrl(MatchREST.ENDPOINT)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(MatchREST.class);
+        User connectedUser = Properties.getInstance().getConnectedUser();
+        try {
+            List<Match> list = matchREST.getAllMatchByClubId(connectedUser.getClub().getId().intValue()).execute().body();
+            if (list.size() > 0) {
+                mListView.setupView(list);
+            }
+            Log.e("liste : ", list.toString());
+        } catch(Exception e) {
+            Log.e("PERSONNAL ERROR LOG","Erreur : "+e.getMessage());
         }
+
         mListView.setOnMatchSelectedListener(new MatchListView.OnMatchSelectedListener() {
             @Override
             public void onMatchSelected(Match match) {

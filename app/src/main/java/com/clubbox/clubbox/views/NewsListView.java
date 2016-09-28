@@ -12,6 +12,8 @@ import android.widget.ListView;
 
 import com.clubbox.clubbox.model.News;
 
+import java.util.List;
+
 
 public class NewsListView extends ListView {
     public static final String TAG = "NewsListView";
@@ -47,11 +49,11 @@ public class NewsListView extends ListView {
 
     }
 
-    public void setupView(News.List newses) {
+    public void setupView(List<News> newses) {
         mAdapter.setNewsList(newses);
     }
     private class NewsAdapter extends BaseAdapter {
-        News.List mNews = new News.List();
+        List<News> mNews = new News.List();
 
         @Override
         public int getCount() {
@@ -80,7 +82,7 @@ public class NewsListView extends ListView {
             return view;
         }
 
-        public void setNewsList(News.List news) {
+        public void setNewsList(List<News> news) {
             mNews = news;
             notifyDataSetChanged();
         }

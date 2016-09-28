@@ -3,6 +3,8 @@ package com.clubbox.clubbox.network;
 import com.clubbox.clubbox.model.Club;
 import com.clubbox.clubbox.model.Match;
 
+import java.util.List;
+
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Path;
@@ -19,7 +21,7 @@ public interface MatchREST {
     @GET("club/{id}/lastMatch")
     Call<Match> getLastMatchByClubId(@Path("id") Integer id);
     @GET("club/{id}/allMatch")
-    Call<Match> getAllMatchByClubId(@Path("id") Integer id);
+    Call<List<Match>> getAllMatchByClubId(@Path("id") Integer id);
     @GET("club/{id}/nextMatch")
     Call<Match> getNextMatchByClubId(@Path("id") Integer id);
 

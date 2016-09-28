@@ -11,10 +11,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.clubbox.clubbox.model.Match;
+import com.clubbox.clubbox.model.News;
 import com.clubbox.clubbox.model.User;
 import com.clubbox.clubbox.network.MatchREST;
+import com.clubbox.clubbox.network.NewsREST;
 import com.clubbox.clubbox.network.UserREST;
 import com.clubbox.clubbox.propertie.Properties;
+
+import java.util.List;
 
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
@@ -63,12 +67,16 @@ public class Acceuil extends AppCompatActivity {
                                 Intent changeOnLogin = new Intent(Acceuil.this,MainActivity.class);
                                 Bundle bundle = new Bundle();
                                 Match lastMatch = matchREST.getLastMatchByClubId(connectedUser.getClub().getId().intValue()).execute().body();
+                                Match nextMatch = matchREST.getNextMatchByClubId(connectedUser.getClub().getId().intValue()).execute().body();
                                 bundle.putSerializable("lastMatch",lastMatch);
                                 changeOnLogin.putExtra("lastMatch",bundle);
+                                bundle.putSerializable("nextMatch",nextMatch);
+                                changeOnLogin.putExtra("nextMatch",bundle);
                                 startActivity(changeOnLogin);
                             }
                         }catch(Exception e){
                             Log.e("PERSONNAL ERROR LOG","Erreur : "+e.getMessage());
+                            Toast.makeText(Acceuil.this, "Une erreur est survenue lors de la connexion", Toast.LENGTH_SHORT).show();
                         }
                         p.dismiss();
                     }

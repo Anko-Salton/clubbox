@@ -2,6 +2,8 @@ package com.clubbox.clubbox.network;
 
 import com.clubbox.clubbox.model.News;
 
+import java.util.List;
+
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Part;
@@ -15,7 +17,7 @@ public interface NewsREST {
     public static final String ENDPOINT = "http://92.222.72.89:8080/";
 
     @GET("club/{id}/news")
-    Call<News> allNewsFromClub(@Path("id") Integer id);
+    Call<List<News>> allNewsFromClub(@Path("id") Integer id);
     @GET("club/{id}/news/{dateadd}")
     Call<News> allNewsFromClub(@Path("id") Integer id,@Path("dateadd") String dateadd);
 }

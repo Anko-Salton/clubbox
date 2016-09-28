@@ -12,6 +12,8 @@ import android.widget.ListView;
 
 import com.clubbox.clubbox.model.Match;
 
+import java.util.List;
+
 public class MatchListView extends ListView {
     public static final String TAG = "MatchListView";
 
@@ -43,14 +45,13 @@ public class MatchListView extends ListView {
         mAdapter = new MatchAdapter();
         setAdapter(mAdapter);
         setOnItemClickListener(mOnMatchSelectedListener);
-
     }
 
-    public void setupView(Match.List matchs) {
+    public void setupView(List<Match> matchs) {
         mAdapter.setMatchList(matchs);
     }
     private class MatchAdapter extends BaseAdapter {
-        Match.List mMatchs = new Match.List();
+        List<Match> mMatchs = new Match.List();
 
         @Override
         public int getCount() {
@@ -79,7 +80,7 @@ public class MatchListView extends ListView {
             return view;
         }
 
-        public void setMatchList(Match.List matchs) {
+        public void setMatchList(List<Match> matchs) {
             mMatchs = matchs;
             notifyDataSetChanged();
         }

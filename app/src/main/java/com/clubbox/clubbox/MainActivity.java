@@ -12,9 +12,17 @@ import android.widget.TextView;
 
 import com.clubbox.clubbox.model.Match;
 import com.clubbox.clubbox.model.News;
+import com.clubbox.clubbox.model.User;
+import com.clubbox.clubbox.network.MatchREST;
+import com.clubbox.clubbox.network.NewsREST;
+import com.clubbox.clubbox.propertie.Properties;
 import com.clubbox.clubbox.views.NewsListView;
 
 import java.util.Date;
+import java.util.List;
+
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
@@ -38,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Intent intent = getIntent();
 
-        //TODO: récupérer dernier match et prochain match depuis la base de donnée
-
         //TODO: gérer le LIVE
 
         Match lastMatch = (Match) intent.getBundleExtra("lastMatch").get("lastMatch");
@@ -52,6 +58,18 @@ public class MainActivity extends AppCompatActivity {
             teamAway.setText(lastMatch.getTeamAway().getName());
             scoreHome.setText(String.valueOf(lastMatch.getScoreHome()));
             scoreAway.setText(String.valueOf(lastMatch.getScoreAway()));
+        }
+
+        Match nextMatch = (Match) intent.getBundleExtra("nextMatch").get("nextMatch");
+        if(nextMatch instanceof Match && nextMatch.getId() != 0){
+            TextView teamHome = (TextView) findViewById(R.id.equipe_a_next);
+            TextView teamAway = (TextView) findViewById(R.id.equipe_b_next);
+            TextView scoreHome = (TextView) findViewById(R.id.score_a_next);
+            TextView scoreAway = (TextView) findViewById(R.id.score_b_next);
+            teamHome.setText(nextMatch.getTeamHome().getName());
+            teamAway.setText(nextMatch.getTeamAway().getName());
+            scoreHome.setText(String.valueOf(nextMatch.getScoreHome()));
+            scoreAway.setText(String.valueOf(nextMatch.getScoreAway()));
         }
 
         //Eléments du menu
@@ -68,17 +86,29 @@ public class MainActivity extends AppCompatActivity {
 
         //Création d'une liste de news afin de tester la listview
         //TODO: récupérer les news depuis la base de donnée.
-        News.List list = new News.List();
-        for (int i = 0; i < 25; i++) {
+        //News.List list = new News.List();
+        /*for (int i = 0; i < 25; i++) {
             News news = new News();
             news.setId(i);
             news.setTitle("Barbecue " + i);
-            news.setContent("Nous organisons le barecue de fin de saison, vous êtes tous invités, on va se mettre une grosse mine ça va être trop bien ! Tim mangera toute les saucisses ce petit gourmand ! Venez nombreux pour que Tim soit satisfait");
+            news.setContent("Nous organisons le barbecue de fin de saison, vous êtes tous invités, on va se mettre une grosse mine ça va être trop bien ! Tim mangera toute les saucisses ce petit gourmand ! Venez nombreux pour que Tim soit satisfait");
             news.setDateadd(new Date());
             list.add(news);
-        }
-        if (list.size() > 0) {
-            mListView.setupView(list);
+        }*/
+        NewsREST newsREST = new Retrofit.Builder()
+                .baseUrl(NewsREST.ENDPOINT)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(NewsREST.class);
+        User connectedUser = Properties.getInstance().getConnectedUser();
+        try {
+            List<News> list = newsREST.allNewsFromClub(connectedUser.getClub().getId().intValue()).execute().body();
+            if (list.size() > 0) {
+                mListView.setupView(list);
+            }
+            Log.e("liste : ", list.toString());
+        } catch(Exception e) {
+            Log.e("PERSONNAL ERROR LOG","Erreur : "+e.getMessage());
         }
 
         //Sur le clic d'une news, on affiche la fiche de la news
