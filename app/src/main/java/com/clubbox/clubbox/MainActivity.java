@@ -20,6 +20,7 @@ import com.clubbox.clubbox.views.NewsListView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.RunnableFuture;
 
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         //TODO: gérer le LIVE
 
         Match lastMatch = (Match) intent.getBundleExtra("lastMatch").get("lastMatch");
-        if(lastMatch instanceof Match && lastMatch.getId() != 0){
+        if (lastMatch instanceof Match && lastMatch.getId() != 0) {
             TextView teamHome = (TextView) findViewById(R.id.equipe_a_last);
             TextView teamAway = (TextView) findViewById(R.id.equipe_b_last);
             TextView scoreHome = (TextView) findViewById(R.id.score_a_last);
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Match nextMatch = (Match) intent.getBundleExtra("nextMatch").get("nextMatch");
-        if(nextMatch instanceof Match && nextMatch.getId() != 0){
+        if (nextMatch instanceof Match && nextMatch.getId() != 0) {
             TextView teamHome = (TextView) findViewById(R.id.equipe_a_next);
             TextView teamAway = (TextView) findViewById(R.id.equipe_b_next);
             TextView scoreHome = (TextView) findViewById(R.id.score_a_next);
@@ -95,21 +96,30 @@ public class MainActivity extends AppCompatActivity {
             news.setDateadd(new Date());
             list.add(news);
         }*/
-        NewsREST newsREST = new Retrofit.Builder()
-                .baseUrl(NewsREST.ENDPOINT)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(NewsREST.class);
-        User connectedUser = Properties.getInstance().getConnectedUser();
-        try {
-            List<News> list = newsREST.allNewsFromClub(connectedUser.getClub().getId().intValue()).execute().body();
-            if (list.size() > 0) {
-                mListView.setupView(list);
+
+
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    NewsREST newsREST = new Retrofit.Builder()
+                            .baseUrl(NewsREST.ENDPOINT)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build()
+                            .create(NewsREST.class);
+                    User connectedUser = Properties.getInstance().getConnectedUser();
+                    List<News> list = newsREST.allNewsFromClub(connectedUser.getClub().getId().intValue()).execute().body();
+                    if (list.size() > 0) {
+                        mListView.setupView(list);
+                    }
+                    Log.e("liste : ", list.size() + "");
+                } catch (Exception e) {
+                    Log.e("PERSONNAL ERROR LOG", "Erreur : " + e.toString());
+                }
             }
-            Log.e("liste : ", list.toString());
-        } catch(Exception e) {
-            Log.e("PERSONNAL ERROR LOG","Erreur : "+e.getMessage());
-        }
+        };
+        Thread thread = new Thread(run);
+        thread.start();
 
         //Sur le clic d'une news, on affiche la fiche de la news
         mListView.setOnNewsSelectedListener(new NewsListView.OnNewsSelectedListener() {
@@ -117,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
             public void onNewsSelected(News news) {
                 Intent i = new Intent(MainActivity.this, NewsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putInt("newsId",news.getId());
+                bundle.putInt("newsId", news.getId());
                 bundle.putString("newsTitle", news.getTitle());
                 bundle.putString("newsDate", news.getDateFormatFR());
                 bundle.putString("newsDesc", news.getContent());

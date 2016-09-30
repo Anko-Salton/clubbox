@@ -71,22 +71,30 @@ public class ListMatchActivity extends AppCompatActivity {
             Match match = new Match(i, new Date(), "16H", "Colmar city", "Rue du stade", (long) 68000, "Colmar", th, ta, 3, 0, "Résumé de l'équipe à domicile, après un but maginfique de l'attaquant blabla", "Résumé de l'équipe à l'extérieur, après un but maginfique de l'attaquant blabla");
             list.add(match);
         }*/
-        MatchREST matchREST = new Retrofit.Builder()
-                .baseUrl(MatchREST.ENDPOINT)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(MatchREST.class);
-        User connectedUser = Properties.getInstance().getConnectedUser();
-        try {
-            List<Match> list = matchREST.getAllMatchByClubId(connectedUser.getClub().getId().intValue()).execute().body();
-            if (list.size() > 0) {
-                mListView.setupView(list);
-            }
-            Log.e("liste : ", list.toString());
-        } catch(Exception e) {
-            Log.e("PERSONNAL ERROR LOG","Erreur : "+e.getMessage());
-        }
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
 
+
+                MatchREST matchREST = new Retrofit.Builder()
+                        .baseUrl(MatchREST.ENDPOINT)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
+                        .create(MatchREST.class);
+                User connectedUser = Properties.getInstance().getConnectedUser();
+                try {
+                    List<Match> list = matchREST.getAllMatchByClubId(connectedUser.getClub().getId().intValue()).execute().body();
+                    if (list.size() > 0) {
+                        mListView.setupView(list);
+                    }
+                    Log.e("liste : ", list.toString());
+                } catch (Exception e) {
+                    Log.e("PERSONNAL ERROR LOG", "Erreur : " + e.getMessage());
+                }
+            }
+        };
+        Thread thread = new Thread(run);
+        thread.start();
         mListView.setOnMatchSelectedListener(new MatchListView.OnMatchSelectedListener() {
             @Override
             public void onMatchSelected(Match match) {

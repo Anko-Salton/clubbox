@@ -11,7 +11,7 @@ public class News implements Serializable {
 
     private Integer id;
     private Club club;
-    private Date dateadd;
+    private String dateadd;
     private String title;
     private String content;
 
@@ -36,16 +36,14 @@ public class News implements Serializable {
     }
 
     public String getDateFormatFR() {
-        DateFormat f = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault());
-        String formattedDate = f.format(this.dateadd);
-        return (formattedDate);
+        return (this.dateadd);
     }
 
-    public Date getDateadd() {
+    public String getDateadd() {
         return dateadd;
     }
 
-    public void setDateadd(Date dateadd) {
+    public void setDateadd(String dateadd) {
         this.dateadd = dateadd;
     }
 

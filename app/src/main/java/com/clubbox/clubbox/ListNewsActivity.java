@@ -54,7 +54,7 @@ public class ListNewsActivity extends AppCompatActivity {
             news.setId(i);
             news.setTitle("Barbecue " + i);
             news.setContent("Nous organisons le barecue de fin de saison, vous êtes tous invités, on va se mettre une grosse mine ça va être trop bien ! Tim mangera toute les saucisses ce petit gourmand ! Venez nombreux pour que Tim soit satisfait");
-            news.setDateadd(new Date());
+            news.setDateadd("");
             list.add(news);
         }
 
