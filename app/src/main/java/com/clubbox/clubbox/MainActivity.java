@@ -85,19 +85,6 @@ public class MainActivity extends AppCompatActivity {
 
         mListView = (NewsListView) findViewById(R.id.listViewNews);
 
-        //Création d'une liste de news afin de tester la listview
-        //TODO: récupérer les news depuis la base de donnée.
-        //News.List list = new News.List();
-        /*for (int i = 0; i < 25; i++) {
-            News news = new News();
-            news.setId(i);
-            news.setTitle("Barbecue " + i);
-            news.setContent("Nous organisons le barbecue de fin de saison, vous êtes tous invités, on va se mettre une grosse mine ça va être trop bien ! Tim mangera toute les saucisses ce petit gourmand ! Venez nombreux pour que Tim soit satisfait");
-            news.setDateadd(new Date());
-            list.add(news);
-        }*/
-
-
         Runnable run = new Runnable() {
             @Override
             public void run() {

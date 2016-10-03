@@ -11,9 +11,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.clubbox.clubbox.model.News;
+import com.clubbox.clubbox.model.User;
+import com.clubbox.clubbox.network.NewsREST;
+import com.clubbox.clubbox.propertie.Properties;
 import com.clubbox.clubbox.views.NewsListView;
 
 import java.util.Date;
+import java.util.List;
+
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 
 public class ListNewsActivity extends AppCompatActivity {
 
@@ -46,21 +53,29 @@ public class ListNewsActivity extends AppCompatActivity {
 
         mListView = (NewsListView) findViewById(R.id.listViewNews);
 
-        //On crée des données afin de tester l'affichage et la création d'objet
-        //TODO: récupérer les données depuis la base de donnée.
-        News.List list = new News.List();
-        for (int i = 0; i < 25; i++) {
-            News news = new News();
-            news.setId(i);
-            news.setTitle("Barbecue " + i);
-            news.setContent("Nous organisons le barecue de fin de saison, vous êtes tous invités, on va se mettre une grosse mine ça va être trop bien ! Tim mangera toute les saucisses ce petit gourmand ! Venez nombreux pour que Tim soit satisfait");
-            news.setDateadd("");
-            list.add(news);
-        }
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    NewsREST newsREST = new Retrofit.Builder()
+                            .baseUrl(NewsREST.ENDPOINT)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build()
+                            .create(NewsREST.class);
+                    User connectedUser = Properties.getInstance().getConnectedUser();
+                    List<News> list = newsREST.allNewsFromClub(connectedUser.getClub().getId().intValue()).execute().body();
+                    if (list.size() > 0) {
+                        mListView.setupView(list);
+                    }
+                    Log.e("liste : ", list.size() + "");
+                } catch (Exception e) {
+                    Log.e("PERSONNAL ERROR LOG", "Erreur : " + e.toString());
+                }
+            }
+        };
+        Thread thread = new Thread(run);
+        thread.start();
 
-        if (list.size() > 0) {
-            mListView.setupView(list);
-        }
         mListView.setOnNewsSelectedListener(new NewsListView.OnNewsSelectedListener() {
             @Override
             public void onNewsSelected(News news) {

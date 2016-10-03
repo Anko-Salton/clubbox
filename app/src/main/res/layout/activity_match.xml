@@ -142,39 +142,6 @@
                 android:background="@drawable/h_foncee_2"
                 android:textColor="#000"/>
 
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/h_claire_2"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <RadioButton
-                    android:id="@+id/eventRadioPresent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/present"
-                    android:textColor="#fff"
-                    android:padding="5dp"/>
-
-                <RadioButton
-                    android:id="@+id/enventRadioAbsent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/absent"
-                    android:textColor="#fff"
-                    android:padding="5dp"/>
-
-                <RadioButton
-                    android:id="@id/enventRadioAVoir"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#fff"
-                    android:text="@string/aVoir"
-                    android:padding="5dp"/>
-
-            </RadioGroup>
-
         </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>
