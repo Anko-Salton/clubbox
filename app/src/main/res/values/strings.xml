@@ -25,7 +25,7 @@
     <string name="accueil">Accueil</string>
     <string name="resultat">Résultats</string>
     <string name="classement">Classement</string>
-    <string name="event">Evènements</string>
+    <string name="event">Actualités</string>
     <string name="GestionProfil">Gestion du Profil</string>
     <string name="FermerMenu">Fermer le menu</string>
     <string name="menu">MENU</string>
@@ -35,7 +35,7 @@
     <string name="absent">Absent</string>
     <string name="present">Présent</string>
     <string name="aVoir">A voir</string>
-    <string name="Convocations">Convocations et matchs</string>
+    <string name="Convocations">Convocations</string>
     <string name="Evènements">Evènements</string>
     <string name="Evènement">Evènement</string>
     <string name="Match">Match</string>
