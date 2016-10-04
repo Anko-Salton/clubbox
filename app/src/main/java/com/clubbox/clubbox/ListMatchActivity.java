@@ -74,8 +74,6 @@ public class ListMatchActivity extends AppCompatActivity {
         Runnable run = new Runnable() {
             @Override
             public void run() {
-
-
                 MatchREST matchREST = new Retrofit.Builder()
                         .baseUrl(MatchREST.ENDPOINT)
                         .addConverterFactory(GsonConverterFactory.create())

@@ -92,33 +92,38 @@ public class MainActivity extends AppCompatActivity {
 
                     lastMatch = matchREST.getLastMatchByClubId(connectedUser.getClub().getId().intValue()).execute().body();
                     nextMatch = matchREST.getNextMatchByClubId(connectedUser.getClub().getId().intValue()).execute().body();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            TextView teamHomeLast = (TextView) findViewById(R.id.equipe_a_last);
+                            TextView teamAwayLast = (TextView) findViewById(R.id.equipe_b_last);
+                            TextView scoreHomeLast = (TextView) findViewById(R.id.score_a_last);
+                            TextView scoreAwayLast = (TextView) findViewById(R.id.score_b_last);
+                            TextView teamHome = (TextView) findViewById(R.id.equipe_a_next);
+                            TextView teamAway = (TextView) findViewById(R.id.equipe_b_next);
+                            TextView scoreHome = (TextView) findViewById(R.id.score_a_next);
+                            TextView scoreAway = (TextView) findViewById(R.id.score_b_next);
 
-                    TextView teamHomeLast = (TextView) findViewById(R.id.equipe_a_last);
-                    TextView teamAwayLast = (TextView) findViewById(R.id.equipe_b_last);
-                    TextView scoreHomeLast = (TextView) findViewById(R.id.score_a_last);
-                    TextView scoreAwayLast = (TextView) findViewById(R.id.score_b_last);
-                    TextView teamHome = (TextView) findViewById(R.id.equipe_a_next);
-                    TextView teamAway = (TextView) findViewById(R.id.equipe_b_next);
-                    TextView scoreHome = (TextView) findViewById(R.id.score_a_next);
-                    TextView scoreAway = (TextView) findViewById(R.id.score_b_next);
+                            if (lastMatch instanceof Match && lastMatch.getId() != 0) {
+                                Log.e("lastMatchIF : ", "ok");
 
-                    if (lastMatch instanceof Match && lastMatch.getId() != 0) {
-                        Log.e("lastMatchIF : ", "ok");
+                                teamHomeLast.setText(lastMatch.getTeamHome().getName());
+                                teamAwayLast.setText(lastMatch.getTeamAway().getName());
+                                scoreHomeLast.setText(String.valueOf(lastMatch.getScoreHome()));
+                                scoreAwayLast.setText(String.valueOf(lastMatch.getScoreAway()));
+                            }
 
-                        teamHomeLast.setText(lastMatch.getTeamHome().getName());
-                        teamAwayLast.setText(lastMatch.getTeamAway().getName());
-                        scoreHomeLast.setText(String.valueOf(lastMatch.getScoreHome()));
-                        scoreAwayLast.setText(String.valueOf(lastMatch.getScoreAway()));
-                    }
+                            if (nextMatch instanceof Match && nextMatch.getId() != 0) {
+                                Log.e("nextMatchIf : ", "ok");
 
-                    /*if (nextMatch instanceof Match && nextMatch.getId() != 0) {
-                        Log.e("nextMatchIf : ", "ok");
+                                teamHome.setText(nextMatch.getTeamHome().getName());
+                                teamAway.setText(nextMatch.getTeamAway().getName());
+                                scoreHome.setText(String.valueOf(nextMatch.getScoreHome()));
+                                scoreAway.setText(String.valueOf(nextMatch.getScoreAway()));
+                            }
+                        }
+                    });
 
-                        teamHome.setText(nextMatch.getTeamHome().getName());
-                        teamAway.setText(nextMatch.getTeamAway().getName());
-                        scoreHome.setText(String.valueOf(nextMatch.getScoreHome()));
-                        scoreAway.setText(String.valueOf(nextMatch.getScoreAway()));
-                    }*/
                 } catch (Exception e) {
                     Log.e("PERSONNAL ERROR LOG", "Erreur : " + e.toString());
                 }
