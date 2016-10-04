@@ -12,6 +12,9 @@ import android.widget.ListView;
 
 import com.clubbox.clubbox.model.Channel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChannelListView extends ListView {
 
     public static final String TAG = "ChannelListView";
@@ -46,11 +49,11 @@ public class ChannelListView extends ListView {
         setOnItemClickListener(mOnChannelSelectedListener);
     }
 
-    public void setupView(Channel.List channels) {
+    public void setupView(List<Channel> channels) {
         mAdapter.setChannelList(channels);
     }
     private class ChannelAdapter extends BaseAdapter {
-        Channel.List mChannels = new Channel.List();
+        List<Channel> mChannels = new ArrayList<Channel>();
 
         @Override
         public int getCount() {
@@ -79,7 +82,7 @@ public class ChannelListView extends ListView {
             return view;
         }
 
-        public void setChannelList(Channel.List channels) {
+        public void setChannelList(List<Channel> channels) {
             mChannels = channels;
             notifyDataSetChanged();
         }

@@ -54,9 +54,6 @@ public class ChannelItemView extends LinearLayout {
 
     public void setupView(Channel channel) {
         nameChannel.setText(channel.getName());
-        ArrayList<Message> messages = channel.getMessages();
-        int size = messages.size();
-        lastMessChannel.setText(messages.get(size - 1).getContent());
     }
 
 }

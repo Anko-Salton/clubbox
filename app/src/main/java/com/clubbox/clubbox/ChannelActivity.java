@@ -69,13 +69,6 @@ public class ChannelActivity extends AppCompatActivity {
         //On récupère le channel sélectionné précedement
         final Channel theChannel = (Channel) b.getSerializable("theChannel");
 
-        //On récupère les messages du channel concerné
-        ArrayList<Message> messages = theChannel.getMessages();
-
-        //On affiche les messages dans les logs
-        for (int k=0; k<messages.size(); k++) {
-            Log.d(TAG, String.valueOf(messages.get(k).getUser().getForname() + " " + messages.get(k).getUser().getName() + " : " + messages.get(k).getContent()));
-        }
 
         //Ici on commence le traitement de la page
         chatText = (EditText) findViewById(R.id.editTextMessage);
@@ -195,7 +188,6 @@ public class ChannelActivity extends AppCompatActivity {
         Message msg = new Message();
         msg.setContent(chatText.getText().toString());
         msg.setLeft(side);
-        theChannel.sendMessage(msg);
         chatArrayAdapter.add(msg);
         chatText.setText("");
         side = !side;

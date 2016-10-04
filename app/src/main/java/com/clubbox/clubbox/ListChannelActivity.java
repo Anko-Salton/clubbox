@@ -16,9 +16,16 @@ import com.clubbox.clubbox.model.Division;
 import com.clubbox.clubbox.model.Message;
 import com.clubbox.clubbox.model.Team;
 import com.clubbox.clubbox.model.User;
+import com.clubbox.clubbox.network.ChannelREST;
+import com.clubbox.clubbox.propertie.Properties;
 import com.clubbox.clubbox.views.ChannelListView;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 
 public class ListChannelActivity extends AppCompatActivity {
 
@@ -53,36 +60,33 @@ public class ListChannelActivity extends AppCompatActivity {
 
         mListView = (ChannelListView) findViewById(R.id.listViewChannel);
 
-        //On crée des données afin de tester l'affichage et la création d'objet
-        //TODO: récupérer les données depuis la base de donnée.
-        Channel.List channels = new Channel.List();
-        User.List users = new User.List();
-        Message.List messages = new Message.List();
-        Club c1 = new Club((long) 0);
-        Departement dept1 = new Departement(68, "Haut-rhin");
-        Division d1 = new Division(0, "Div 1", dept1);
-        Team th = new Team(0, c1, "Colmar", d1);
-        Team ta = new Team(0, c1, "Strasbourg", d1);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ChannelREST channelREST = new Retrofit.Builder()
+                        .baseUrl(ChannelREST.ENDPOINT)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build().create(ChannelREST.class);
+                try{
+                    final List<Channel> channels = channelREST.getAllChannelFromClub(Properties.getInstance().getConnectedUser().getClub().getId().intValue()).execute().body();
+                    if (channels.size() > 0) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (channels.size() > 0) {
+                                    mListView.setupView(channels);
+                                }
+                            }
+                        });
+                    }
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
 
-        for (int i = 0; i < 5; i++) {
-            User user = new User(i, "email"+i+"@blabla.fr", "PassTest"+i, "Name"+i, "Forname"+i, "", "0606060606", "/images/profil", 0);
-            users.add(user);
-        }
 
-        for (int i = 0; i < 5; i++) {
-            Message message = new Message(i, new Date(), "Contenu du message"+i, users.get(i));
-            message.setLeft(false);
-            messages.add(message);
-        }
-
-        for (int i = 0; i < 25; i++) {
-            Channel channel = new Channel(i, "Channel "+i, users, messages);
-            channels.add(channel);
-        }
-
-        if (channels.size() > 0) {
-            mListView.setupView(channels);
-        }
         mListView.setOnChannelSelectedListener(new ChannelListView.OnChannelSelectedListener() {
             @Override
             public void onChannelSelected(Channel channel) {

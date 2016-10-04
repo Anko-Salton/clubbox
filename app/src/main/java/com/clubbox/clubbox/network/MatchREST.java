@@ -2,6 +2,7 @@ package com.clubbox.clubbox.network;
 
 import com.clubbox.clubbox.model.Club;
 import com.clubbox.clubbox.model.Match;
+import com.clubbox.clubbox.model.Scorer;
 
 import java.util.List;
 
@@ -24,5 +25,8 @@ public interface MatchREST {
     Call<List<Match>> getAllMatchByClubId(@Path("id") Integer id);
     @GET("club/{id}/nextMatch")
     Call<Match> getNextMatchByClubId(@Path("id") Integer id);
+    @GET("match/{id}/scorers")
+    Call<Scorer> getScorerFromMatch(@Path("id") Integer id);
+
 
 }
