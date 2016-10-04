@@ -118,18 +118,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Prénom :"
-                    android:gravity="center_horizontal"
-                    android:textColor="#fff"/>
-                <EditText
-                    android:id="@+id/txtForname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#fff"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:text="Date de naissance :"
                     android:gravity="center_horizontal"
                     android:textColor="#fff"/>

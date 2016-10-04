@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.clubbox.clubbox.model.User;
+import com.clubbox.clubbox.propertie.Properties;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -72,18 +73,15 @@ public class ProfilActivity extends AppCompatActivity {
         navProfil = (Button) findViewById(R.id.nav_profil);
         theMenu = (LinearLayout) findViewById(R.id.menuLeft);
 
-        //Création d'un utilisateur de test
-        //TODO: récupérer l'utilisateur connecté
-        User theUser = new User(0, "tainlot.florian@hotmail.fr", "password", "Tainlot", "Florian", new Date().toString(), "0679315148", "/images/photoProfile", 0);
+        User theUser = Properties.getInstance().getConnectedUser();
 
-        final EditText mail, password, confirmPassword, name, forname, birthdate, phone;
+        final EditText mail, password, confirmPassword, name, birthdate, phone;
         final ImageView photo;
         Button validate, cancel;
 
         mail = (EditText) findViewById(R.id.txtMail);
         password = (EditText) findViewById(R.id.txtPassword);
         confirmPassword = (EditText) findViewById(R.id.txtConfirmPassword);
-        forname = (EditText) findViewById(R.id.txtForname);
         birthdate = (EditText) findViewById(R.id.birthdate);
         phone = (EditText) findViewById(R.id.txtPhone);
         name = (EditText) findViewById(R.id.txtName);
@@ -92,9 +90,6 @@ public class ProfilActivity extends AppCompatActivity {
         cancel = (Button) findViewById(R.id.btnAnnuler);
 
         mail.setText(theUser.getEmail());
-        password.setText(theUser.getPassword());
-        confirmPassword.setText(theUser.getPassword());
-        forname.setText(theUser.getForname());
         name.setText(theUser.getName());
         birthdate.setText(theUser.getBirthdate().toString());
         phone.setText(theUser.getPhone());
@@ -156,24 +151,20 @@ public class ProfilActivity extends AppCompatActivity {
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    User theUser = new User(0, "tainlot.florian@hotmail.fr", "password", "Tainlot", "Florian", new Date().toString(), "0679315148", "/images/photoProfile", 0);
+                    User theUser = Properties.getInstance().getConnectedUser();
 
-                    EditText mail, password, confirmPassword, name, forname, birthdate, phone;
+                    EditText mail, password, confirmPassword, name, birthdate, phone;
                     ImageView photo;
 
                     mail = (EditText) findViewById(R.id.txtMail);
                     password = (EditText) findViewById(R.id.txtPassword);
                     confirmPassword = (EditText) findViewById(R.id.txtConfirmPassword);
-                    forname = (EditText) findViewById(R.id.txtForname);
                     birthdate = (EditText) findViewById(R.id.birthdate);
                     phone = (EditText) findViewById(R.id.txtPhone);
                     name = (EditText) findViewById(R.id.txtName);
                     photo = (ImageView) findViewById(R.id.imgProfil);
 
                     mail.setText(theUser.getEmail());
-                    password.setText(theUser.getPassword());
-                    confirmPassword.setText(theUser.getPassword());
-                    forname.setText(theUser.getForname());
                     name.setText(theUser.getName());
                     birthdate.setText(theUser.getBirthdate().toString());
                     phone.setText(theUser.getPhone());
