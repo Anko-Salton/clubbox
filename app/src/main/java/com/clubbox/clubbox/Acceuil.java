@@ -57,21 +57,9 @@ public class Acceuil extends AppCompatActivity {
                             Log.e("ConnectedUser : ",connectedUser.getId().toString());
                             //Toast.makeText(Acceuil.this, connectedUser.getId()+"// "+connectedUser.getName(), Toast.LENGTH_SHORT).show();
                             if(connectedUser != null && connectedUser.getId() != 0){
-                                MatchREST matchREST = new Retrofit.Builder()
-                                        .baseUrl(MatchREST.ENDPOINT)
-                                        .addConverterFactory(GsonConverterFactory.create())
-                                        .build()
-                                        .create(MatchREST.class);
                                 Properties.getInstance().setConnected(true);
                                 Properties.getInstance().setConnectedUser(connectedUser);
                                 Intent changeOnLogin = new Intent(Acceuil.this,MainActivity.class);
-                                Bundle bundle = new Bundle();
-                                Match lastMatch = matchREST.getLastMatchByClubId(connectedUser.getClub().getId().intValue()).execute().body();
-                                Match nextMatch = matchREST.getNextMatchByClubId(connectedUser.getClub().getId().intValue()).execute().body();
-                                bundle.putSerializable("lastMatch",lastMatch);
-                                changeOnLogin.putExtra("lastMatch",bundle);
-                                bundle.putSerializable("nextMatch",nextMatch);
-                                changeOnLogin.putExtra("nextMatch",bundle);
                                 startActivity(changeOnLogin);
                             }
                         }catch(Exception e){
