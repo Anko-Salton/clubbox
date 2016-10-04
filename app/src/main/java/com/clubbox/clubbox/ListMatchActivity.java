@@ -81,9 +81,15 @@ public class ListMatchActivity extends AppCompatActivity {
                         .create(MatchREST.class);
                 User connectedUser = Properties.getInstance().getConnectedUser();
                 try {
-                    List<Match> list = matchREST.getAllMatchByClubId(connectedUser.getClub().getId().intValue()).execute().body();
+                    final List<Match> list = matchREST.getAllMatchByClubId(connectedUser.getClub().getId().intValue()).execute().body();
                     if (list.size() > 0) {
-                        mListView.setupView(list);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mListView.setupView(list);
+                            }
+                        });
+
                     }
                     Log.e("liste : ", list.toString());
                 } catch (Exception e) {
