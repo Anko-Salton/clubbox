@@ -21,11 +21,11 @@ public class NewsActivity extends AppCompatActivity {
 
     //Eléments du menu
     private ImageButton menuButton;
-    private Button navListNews;
     private Button navListMatch;
     private Button closeMenu;
     private Button navHome;
     private Button navMessages;
+    private Button navScorers;
     private Button navProfil;
     private LinearLayout theMenu;
 
@@ -44,13 +44,13 @@ public class NewsActivity extends AppCompatActivity {
 
         //Eléments du menu
         menuButton = (ImageButton) findViewById(R.id.navButton);
-        navListNews = (Button) findViewById(R.id.nav_event);
         navListMatch = (Button) findViewById(R.id.nav_result);
         closeMenu = (Button) findViewById(R.id.nav_close);
         navHome = (Button) findViewById(R.id.nav_accueil);
         navMessages = (Button) findViewById(R.id.nav_messages);
         navProfil = (Button) findViewById(R.id.nav_profil);
         theMenu = (LinearLayout) findViewById(R.id.menuLeft);
+        navScorers = (Button) findViewById(R.id.nav_rank);
 
         //On récupère les données récupérée de la page précédente
         Bundle b = getIntent().getExtras();
@@ -106,11 +106,10 @@ public class NewsActivity extends AppCompatActivity {
             }
         });
 
-
-        navListNews.setOnClickListener(new View.OnClickListener() {
+        navScorers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(NewsActivity.this, ListNewsActivity.class);
+                Intent i = new Intent(NewsActivity.this, ListScorerActivity.class);
                 startActivity(i);
                 LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
                 if (theMenu != null) {

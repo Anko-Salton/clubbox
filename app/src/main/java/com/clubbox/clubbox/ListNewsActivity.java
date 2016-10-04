@@ -26,12 +26,12 @@ public class ListNewsActivity extends AppCompatActivity {
 
     //Eléments du menu
     private ImageButton menuButton;
-    private Button navListNews;
     private Button navListMatch;
     private Button closeMenu;
     private Button navHome;
     private Button navMessages;
     private Button navProfil;
+    private Button navScorers;
     private LinearLayout theMenu;
 
     private NewsListView mListView;
@@ -43,12 +43,12 @@ public class ListNewsActivity extends AppCompatActivity {
 
         //Eléments du menu
         menuButton = (ImageButton) findViewById(R.id.navButton);
-        navListNews = (Button) findViewById(R.id.nav_event);
         navListMatch = (Button) findViewById(R.id.nav_result);
         closeMenu = (Button) findViewById(R.id.nav_close);
         navHome = (Button) findViewById(R.id.nav_accueil);
         navMessages = (Button) findViewById(R.id.nav_messages);
         navProfil = (Button) findViewById(R.id.nav_profil);
+        navScorers = (Button) findViewById(R.id.nav_rank);
         theMenu = (LinearLayout) findViewById(R.id.menuLeft);
 
         mListView = (NewsListView) findViewById(R.id.listViewNews);
@@ -119,17 +119,22 @@ public class ListNewsActivity extends AppCompatActivity {
             }
         });
 
-        navListNews.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                theMenu.setVisibility(View.INVISIBLE);
-            }
-        });
-
         navListMatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(ListNewsActivity.this, ListMatchActivity.class);
+                startActivity(i);
+                LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
+                if (theMenu != null) {
+                    theMenu.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        navScorers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ListNewsActivity.this, ListScorerActivity.class);
                 startActivity(i);
                 LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
                 if (theMenu != null) {

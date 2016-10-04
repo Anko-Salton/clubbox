@@ -22,12 +22,12 @@ public class MatchActivity extends AppCompatActivity {
 
     //Eléments du menu
     private ImageButton menuButton;
-    private Button navListNews;
     private Button navListMatch;
     private Button closeMenu;
     private Button navHome;
     private Button navMessages;
     private Button navProfil;
+    private Button navScorers;
     private LinearLayout theMenu;
 
     //Eléments de la view
@@ -47,12 +47,12 @@ public class MatchActivity extends AppCompatActivity {
 
         //Eléments du menu
         menuButton = (ImageButton) findViewById(R.id.navButton);
-        navListNews = (Button) findViewById(R.id.nav_event);
         navListMatch = (Button) findViewById(R.id.nav_result);
         closeMenu = (Button) findViewById(R.id.nav_close);
         navHome = (Button) findViewById(R.id.nav_accueil);
         navMessages = (Button) findViewById(R.id.nav_messages);
         navProfil = (Button) findViewById(R.id.nav_profil);
+        navScorers = (Button) findViewById(R.id.nav_rank);
         theMenu = (LinearLayout) findViewById(R.id.menuLeft);
 
         matchDate= (TextView) findViewById(R.id.matchDate);
@@ -104,10 +104,10 @@ public class MatchActivity extends AppCompatActivity {
             }
         });
 
-        navListNews.setOnClickListener(new View.OnClickListener() {
+        navScorers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MatchActivity.this, ListNewsActivity.class);
+                Intent i = new Intent(MatchActivity.this, ListScorerActivity.class);
                 startActivity(i);
                 LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
                 if (theMenu != null) {

@@ -33,12 +33,12 @@ public class ListChannelActivity extends AppCompatActivity {
 
     //Eléments du menu
     private ImageButton menuButton;
-    private Button navListNews;
     private Button navListMatch;
     private Button closeMenu;
     private Button navHome;
     private Button navMessages;
     private Button navProfil;
+    private Button navScorers;
     private LinearLayout theMenu;
 
     private ChannelListView mListView;
@@ -50,8 +50,8 @@ public class ListChannelActivity extends AppCompatActivity {
 
         //Eléments du menu
         menuButton = (ImageButton) findViewById(R.id.navButton);
-        navListNews = (Button) findViewById(R.id.nav_event);
         navListMatch = (Button) findViewById(R.id.nav_result);
+        navScorers = (Button) findViewById(R.id.nav_rank);
         closeMenu = (Button) findViewById(R.id.nav_close);
         navHome = (Button) findViewById(R.id.nav_accueil);
         navMessages = (Button) findViewById(R.id.nav_messages);
@@ -69,7 +69,7 @@ public class ListChannelActivity extends AppCompatActivity {
                         .build().create(ChannelREST.class);
                 try{
                     final List<Channel> channels = channelREST.getAllChannelFromClub(Properties.getInstance().getConnectedUser().getClub().getId().intValue()).execute().body();
-                    if (channels.size() > 0) {
+                    if (channels != null && channels.size() > 0) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -127,10 +127,10 @@ public class ListChannelActivity extends AppCompatActivity {
             }
         });
 
-        navListNews.setOnClickListener(new View.OnClickListener() {
+        navScorers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ListChannelActivity.this, ListNewsActivity.class);
+                Intent i = new Intent(ListChannelActivity.this, ListScorerActivity.class);
                 startActivity(i);
                 LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
                 if (theMenu != null) {

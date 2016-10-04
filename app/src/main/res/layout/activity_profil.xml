@@ -172,6 +172,7 @@
 
         </ScrollView>
     </android.support.design.widget.CoordinatorLayout>
+
     <LinearLayout
         android:id="@+id/menuLeft"
         android:layout_width="wrap_content"
@@ -247,25 +248,11 @@
             android:textSize="18sp" />
 
         <Button
-            android:id="@+id/nav_event"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.11"
-            android:background="@drawable/h_claire_2"
-            android:drawableLeft="@drawable/calendar"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:padding="10dp"
-            android:text="@string/event"
-            android:textColor="#fff"
-            android:textSize="18sp" />
-
-        <Button
             android:id="@+id/nav_convocations"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.11"
-            android:background="@drawable/h_foncee_2"
+            android:background="@drawable/h_claire_2"
             android:drawableLeft="@drawable/calendar_check"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
@@ -279,7 +266,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.11"
-            android:background="@drawable/h_claire_2"
+            android:background="@drawable/h_foncee_2"
             android:drawableLeft="@drawable/account"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
@@ -293,7 +280,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.11"
-            android:background="@drawable/h_foncee_2"
+            android:background="@drawable/h_claire_2"
             android:drawableLeft="@drawable/close"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
@@ -304,4 +291,5 @@
 
 
     </LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>

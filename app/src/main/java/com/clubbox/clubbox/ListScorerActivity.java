@@ -1,34 +1,25 @@
 package com.clubbox.clubbox;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
-import com.clubbox.clubbox.model.Club;
-import com.clubbox.clubbox.model.Departement;
-import com.clubbox.clubbox.model.Division;
-import com.clubbox.clubbox.model.Match;
-import com.clubbox.clubbox.model.Team;
-import com.clubbox.clubbox.model.User;
-import com.clubbox.clubbox.network.MatchREST;
-import com.clubbox.clubbox.propertie.Properties;
-import com.clubbox.clubbox.views.MatchListView;
+import com.clubbox.clubbox.model.Scorer;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
+public class ListScorerActivity extends AppCompatActivity {
 
-public class ListMatchActivity extends AppCompatActivity {
-
-    private static final String TAG = "ListMatchActivity";
+    public static final String TAG = "NewsActivity : ";
 
     //Eléments du menu
     private ImageButton menuButton;
@@ -36,16 +27,16 @@ public class ListMatchActivity extends AppCompatActivity {
     private Button closeMenu;
     private Button navHome;
     private Button navMessages;
-    private Button navProfil;
     private Button navScorers;
+    private Button navProfil;
     private LinearLayout theMenu;
 
-    private MatchListView mListView;
+    private ListView listViewScorers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_match);
+        setContentView(R.layout.activity_news);
 
         //Eléments du menu
         menuButton = (ImageButton) findViewById(R.id.navButton);
@@ -54,50 +45,18 @@ public class ListMatchActivity extends AppCompatActivity {
         navHome = (Button) findViewById(R.id.nav_accueil);
         navMessages = (Button) findViewById(R.id.nav_messages);
         navProfil = (Button) findViewById(R.id.nav_profil);
-        navScorers = (Button) findViewById(R.id.nav_rank);
         theMenu = (LinearLayout) findViewById(R.id.menuLeft);
+        navScorers = (Button) findViewById(R.id.nav_rank);
 
-        mListView = (MatchListView) findViewById(R.id.listViewMatch);
+        listViewScorers = (ListView) findViewById(R.id.scorers);
 
-        Runnable run = new Runnable() {
-            @Override
-            public void run() {
-                MatchREST matchREST = new Retrofit.Builder()
-                        .baseUrl(MatchREST.ENDPOINT)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build()
-                        .create(MatchREST.class);
-                User connectedUser = Properties.getInstance().getConnectedUser();
-                try {
-                    final List<Match> list = matchREST.getAllMatchByClubId(connectedUser.getClub().getId().intValue()).execute().body();
-                    if (list.size() > 0) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mListView.setupView(list);
-                            }
-                        });
+        Scorer s = new Scorer();
+        s.setId(1);
+        List<Scorer> scorers = new ArrayList<Scorer>();
+        scorers.add(s);
 
-                    }
-                    Log.e("liste : ", list.toString());
-                } catch (Exception e) {
-                    Log.e("PERSONNAL ERROR LOG", "Erreur : " + e.getMessage());
-                }
-            }
-        };
-        Thread thread = new Thread(run);
-        thread.start();
-        mListView.setOnMatchSelectedListener(new MatchListView.OnMatchSelectedListener() {
-            @Override
-            public void onMatchSelected(Match match) {
-                Log.d(TAG, match.toString());
-                Intent i = new Intent(ListMatchActivity.this, MatchActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("theMatch", match);
-                i.putExtras(bundle);
-                startActivity(i);
-            }
-        });
+        ArrayAdapter<Scorer> adapter = new ArrayAdapter<Scorer>(ListScorerActivity.this, android.R.layout.simple_list_item_1, scorers);
+        listViewScorers.setAdapter(adapter);
 
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,14 +71,17 @@ public class ListMatchActivity extends AppCompatActivity {
         closeMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                theMenu.setVisibility(View.INVISIBLE);
+                LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
+                if (theMenu != null) {
+                    theMenu.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
         navHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ListMatchActivity.this, MainActivity.class);
+                Intent i = new Intent(ListScorerActivity.this, MainActivity.class);
                 startActivity(i);
                 LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
                 if (theMenu != null) {
@@ -131,7 +93,7 @@ public class ListMatchActivity extends AppCompatActivity {
         navScorers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ListMatchActivity.this, ListScorerActivity.class);
+                Intent i = new Intent(ListScorerActivity.this, ListScorerActivity.class);
                 startActivity(i);
                 LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
                 if (theMenu != null) {
@@ -143,14 +105,19 @@ public class ListMatchActivity extends AppCompatActivity {
         navListMatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                theMenu.setVisibility(View.INVISIBLE);
+                Intent i = new Intent(ListScorerActivity.this, ListMatchActivity.class);
+                startActivity(i);
+                LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
+                if (theMenu != null) {
+                    theMenu.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
         navMessages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ListMatchActivity.this, ListChannelActivity.class);
+                Intent i = new Intent(ListScorerActivity.this, ListChannelActivity.class);
                 startActivity(i);
                 LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
                 if (theMenu != null) {
@@ -162,7 +129,7 @@ public class ListMatchActivity extends AppCompatActivity {
         navProfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ListMatchActivity.this, ProfilActivity.class);
+                Intent i = new Intent(ListScorerActivity.this, ProfilActivity.class);
                 startActivity(i);
                 LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
                 if (theMenu != null) {
@@ -170,5 +137,6 @@ public class ListMatchActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 }
