@@ -1,21 +1,37 @@
 package com.clubbox.clubbox;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.clubbox.clubbox.model.Match;
 import com.clubbox.clubbox.model.News;
+import com.clubbox.clubbox.model.Scorer;
+import com.clubbox.clubbox.model.User;
+import com.clubbox.clubbox.network.MatchREST;
+import com.clubbox.clubbox.network.ScorerREST;
+import com.clubbox.clubbox.propertie.Properties;
 import com.clubbox.clubbox.views.NewsListView;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 
 public class MatchActivity extends AppCompatActivity {
     public static final String TAG = "MatchActivity : ";
@@ -39,6 +55,7 @@ public class MatchActivity extends AppCompatActivity {
     private RadioButton present;
     private RadioButton absent;
     private RadioButton aConfirmer;
+    private ListView listScorers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,17 +77,50 @@ public class MatchActivity extends AppCompatActivity {
         matchTeamA= (TextView) findViewById(R.id.matchTeamE);
         matchScore= (TextView) findViewById(R.id.matchScore);
         matchResume= (TextView) findViewById(R.id.matchResume);
+        listScorers = (ListView) findViewById(R.id.scorers);
 
         Intent i = getIntent();
         Bundle b = i.getExtras();
 
         //On récupère le match sur lequel l'utilisateur a cliqué précédement.
-        Match theMatch = (Match) b.getSerializable("theMatch");
+        final Match theMatch = (Match) b.getSerializable("theMatch");
         matchDate.setText(theMatch.getDatetime());
         matchTeamH.setText(theMatch.getTeamHome().getName());
         matchTeamA.setText(theMatch.getTeamAway().getName());
         matchScore.setText(theMatch.getScoreHome() + " - " + theMatch.getScoreAway());
         matchResume.setText(theMatch.getResumeHome());
+
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                final ScorerREST scorerREST = new Retrofit.Builder()
+                        .baseUrl(ScorerREST.ENDPOINT)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
+                        .create(ScorerREST.class);
+                User connectedUser = Properties.getInstance().getConnectedUser();
+                try {
+                    final List<Scorer> list = scorerREST.listScorerByMatch(theMatch.getId().intValue()).execute().body();
+                    if (list.size() > 0) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                List<String> scorers = new ArrayList<String>();
+                                for (int i=0;i<list.size();i++) {
+                                    scorers.add(list.get(i).getIdUser().getName());
+                                }
+                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(MatchActivity.this, android.R.layout.simple_list_item_1, scorers);
+                                listScorers.setAdapter(adapter);
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    Log.e("PERSONNAL ERROR LOG", "Erreur : " + e.getMessage());
+                }
+            }
+        };
+        Thread thread = new Thread(run);
+        thread.start();
 
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
