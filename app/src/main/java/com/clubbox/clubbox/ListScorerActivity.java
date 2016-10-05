@@ -13,9 +13,19 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.clubbox.clubbox.model.Scorer;
+import com.clubbox.clubbox.model.User;
+import com.clubbox.clubbox.network.ScorerREST;
+import com.clubbox.clubbox.propertie.Properties;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 
 public class ListScorerActivity extends AppCompatActivity {
 
@@ -36,7 +46,7 @@ public class ListScorerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news);
+        setContentView(R.layout.activity_list_scorer);
 
         //Eléments du menu
         menuButton = (ImageButton) findViewById(R.id.navButton);
@@ -50,13 +60,42 @@ public class ListScorerActivity extends AppCompatActivity {
 
         listViewScorers = (ListView) findViewById(R.id.scorers);
 
-        Scorer s = new Scorer();
-        s.setId(1);
-        List<Scorer> scorers = new ArrayList<Scorer>();
-        scorers.add(s);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ScorerREST scorerREST = new Retrofit.Builder()
+                        .baseUrl(ScorerREST.ENDPOINT)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
+                        .create(ScorerREST.class);
+                ArrayList<String> scorersStr = new ArrayList<String>();
 
-        ArrayAdapter<Scorer> adapter = new ArrayAdapter<Scorer>(ListScorerActivity.this, android.R.layout.simple_list_item_1, scorers);
-        listViewScorers.setAdapter(adapter);
+                try {
+                    ArrayList<Map<Integer, User>> scorers = scorerREST.listScorerByClub(Properties.getInstance().getConnectedUser().getClub().getId().intValue()).execute().body();
+                    Collections.sort(scorers, new Comparator<Map<Integer, User>>() {
+                        @Override
+                        public int compare(Map<Integer, User> lhs, Map<Integer, User> rhs) {
+                            return lhs.keySet().toArray()[0].toString().compareTo(rhs.keySet().toArray()[0].toString());
+                        }
+                    });
+                    for (Map<Integer, User> a : scorers) {
+                        scorersStr.add(a.keySet().toArray()[0].toString() + " // " + a.get(a.keySet().toArray()[0]).getName());
+                    }
+                    final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ListScorerActivity.this, android.R.layout.simple_list_item_1, scorersStr);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            listViewScorers.setAdapter(adapter);
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        thread.start();
 
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
