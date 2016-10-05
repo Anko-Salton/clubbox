@@ -121,24 +121,32 @@ public class ChannelActivity extends AppCompatActivity {
         chatText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    //Si on appuie sur entrée, on envoie le message
-                    try{
-                        String ok = channelREST.postMessage(Properties.getInstance().getConnectedUser().getClub().getId().intValue()
-                                ,theChannel.getId()
-                                ,Properties.getInstance().getConnectedUser().getId()
-                                ,chatText.getText().toString()).execute().body();
-
-                        if(ok=="ok"){
-                            Message msg = new Message();
-                            msg.setContent(chatText.getText().toString());
-                            msg.setLeft(true);
-                            chatArrayAdapter.add(msg);
-                            chatText.setText("");
-                            side = !side;
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                final Message msg = channelREST.postMessage(Properties.getInstance().getConnectedUser().getClub().getId().intValue()
+                                        ,theChannel.getId()
+                                        ,Properties.getInstance().getConnectedUser().getId()
+                                        ,chatText.getText().toString()).execute().body();
+                                if(msg instanceof Message){
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            msg.setContent(chatText.getText().toString());
+                                            msg.setLeft(true);
+                                            chatArrayAdapter.add(msg);
+                                            chatText.setText("");
+                                            side = !side;
+                                        }
+                                    });
+                                }
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
                         }
-                    }catch(Exception e){
-                        e.printStackTrace();
-                    }
+                    });
+                    thread.start();
                 }
                 return false;
             }
@@ -147,7 +155,34 @@ public class ChannelActivity extends AppCompatActivity {
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                sendChatMessage(theChannel);
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            final Message msg = channelREST.postMessage(Properties.getInstance().getConnectedUser().getClub().getId().intValue()
+                                    ,theChannel.getId()
+                                    ,Properties.getInstance().getConnectedUser().getId()
+                                    ,chatText.getText().toString()).execute().body();
+                            if(msg instanceof Message){
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        msg.setContent(chatText.getText().toString());
+                                        msg.setLeft(true);
+                                        chatArrayAdapter.add(msg);
+                                        chatText.setText("");
+                                        side = !side;
+                                    }
+                                });
+                            }
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                thread.start();
+
+
             }
         });
 
