@@ -16,7 +16,7 @@ import retrofit.http.Path;
  */
 
 public interface ScorerREST {
-    public static final String ENDPOINT = "http://10.0.2.2:8180/webservice/";
+    public static final String ENDPOINT = "http://92.222.72.89:8080/webservice/";
 
     @GET("/club/{idClub}/scorers")
     Call<ArrayList<Map<Integer,User>>> listScorerByClub(@Path("idClub") Integer idClub);
