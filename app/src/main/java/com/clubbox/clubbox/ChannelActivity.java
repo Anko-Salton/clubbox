@@ -15,10 +15,19 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.clubbox.clubbox.model.Channel;
+import com.clubbox.clubbox.model.Match;
 import com.clubbox.clubbox.model.Message;
 import com.clubbox.clubbox.model.ChatArrayAdapter;
+import com.clubbox.clubbox.model.User;
+import com.clubbox.clubbox.network.ChannelREST;
+import com.clubbox.clubbox.network.MatchREST;
+import com.clubbox.clubbox.propertie.Properties;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 
 public class ChannelActivity extends AppCompatActivity {
     public static final String TAG = "ChannelActivity : ";
@@ -69,6 +78,43 @@ public class ChannelActivity extends AppCompatActivity {
         //On récupère le channel sélectionné précedement
         final Channel theChannel = (Channel) b.getSerializable("theChannel");
 
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                ChannelREST channelREST = new Retrofit.Builder()
+                        .baseUrl(ChannelREST.ENDPOINT)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
+                        .create(ChannelREST.class);
+                final User connectedUser = Properties.getInstance().getConnectedUser();
+                try {
+                    final List<Message> list = channelREST.getAllMessageFromChannel(connectedUser.getClub().getId().intValue(), theChannel.getId().intValue()).execute().body();
+                    if (list.size() > 0) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (int i = 0; i<list.size(); i++) {
+                                    Message msg = list.get(i);
+                                    Log.d("connectedUser", connectedUser.getId().toString());
+                                    Log.d("msgUser", msg.getUser().getId().toString());
+                                    if (msg.getUser().getId() == connectedUser.getId()) {
+                                        msg.setLeft(false);
+                                    } else {
+                                        msg.setLeft(true);
+                                    }
+                                    chatArrayAdapter.add(msg);
+                                }
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    Log.e("PERSONNAL ERROR LOG", "Erreur : " + e.getMessage());
+                }
+            }
+        };
+        Thread thread = new Thread(run);
+        thread.start();
+
 
         //Ici on commence le traitement de la page
         chatText = (EditText) findViewById(R.id.editTextMessage);
@@ -81,6 +127,7 @@ public class ChannelActivity extends AppCompatActivity {
                 return false;
             }
         });
+
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -187,7 +234,7 @@ public class ChannelActivity extends AppCompatActivity {
         //TODO: Gérer l'envoie du message sur la base de donnée.
         Message msg = new Message();
         msg.setContent(chatText.getText().toString());
-        msg.setLeft(side);
+        msg.setLeft(true);
         chatArrayAdapter.add(msg);
         chatText.setText("");
         side = !side;
