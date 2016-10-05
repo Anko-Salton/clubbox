@@ -3,33 +3,29 @@ package com.clubbox.clubbox;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.TextView;
 
-import com.clubbox.clubbox.model.Scorer;
+import com.clubbox.clubbox.model.Availability;
+import com.clubbox.clubbox.model.Match;
 import com.clubbox.clubbox.model.User;
-import com.clubbox.clubbox.network.ScorerREST;
+import com.clubbox.clubbox.network.MatchREST;
 import com.clubbox.clubbox.propertie.Properties;
+import com.clubbox.clubbox.views.AvailabilityListView;
+import com.clubbox.clubbox.views.MatchListView;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
-public class ListScorerActivity extends AppCompatActivity {
+public class ListAvailibilityActivity extends AppCompatActivity {
 
-    public static final String TAG = "NewsActivity : ";
+    private static final String TAG = "ListAvailibilityActivity";
 
     //Eléments du menu
     private ImageButton menuButton;
@@ -37,16 +33,16 @@ public class ListScorerActivity extends AppCompatActivity {
     private Button closeMenu;
     private Button navHome;
     private Button navMessages;
-    private Button navScorers;
     private Button navProfil;
+    private Button navScorers;
     private LinearLayout theMenu;
 
-    private ListView listViewScorers;
+    private AvailabilityListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_scorer);
+        setContentView(R.layout.activity_list_availibility);
 
         //Eléments du menu
         menuButton = (ImageButton) findViewById(R.id.navButton);
@@ -55,47 +51,40 @@ public class ListScorerActivity extends AppCompatActivity {
         navHome = (Button) findViewById(R.id.nav_accueil);
         navMessages = (Button) findViewById(R.id.nav_messages);
         navProfil = (Button) findViewById(R.id.nav_profil);
-        theMenu = (LinearLayout) findViewById(R.id.menuLeft);
         navScorers = (Button) findViewById(R.id.nav_rank);
+        theMenu = (LinearLayout) findViewById(R.id.menuLeft);
 
-        listViewScorers = (ListView) findViewById(R.id.scorers);
+        final User connectedUser = Properties.getInstance().getConnectedUser();
+        mListView = (AvailabilityListView) findViewById(R.id.convocations);
+        final ArrayList<Match> matchList = new ArrayList<Match>();
 
-        Thread thread = new Thread(new Runnable() {
+        Runnable run = new Runnable() {
             @Override
             public void run() {
-                ScorerREST scorerREST = new Retrofit.Builder()
-                        .baseUrl(ScorerREST.ENDPOINT)
+                MatchREST matchREST = new Retrofit.Builder()
+                        .baseUrl(MatchREST.ENDPOINT)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build()
-                        .create(ScorerREST.class);
-                ArrayList<String> scorersStr = new ArrayList<String>();
-
+                        .create(MatchREST.class);
+                User connectedUser = Properties.getInstance().getConnectedUser();
                 try {
-                    ArrayList<Map<Integer, User>> scorers = scorerREST.listScorerByClub(Properties.getInstance().getConnectedUser().getClub().getId().intValue()).execute().body();
-                    Collections.sort(scorers, Collections.reverseOrder(new Comparator<Map<Integer, User>>() {
-                        @Override
-                        public int compare(Map<Integer, User> lhs, Map<Integer, User> rhs) {
-                            return lhs.keySet().toArray()[0].toString().compareTo(rhs.keySet().toArray()[0].toString());
-                        }
-                    }));
-                    for (Map<Integer, User> a : scorers) {
-                        scorersStr.add(a.keySet().toArray()[0].toString() + " Buts : " + a.get(a.keySet().toArray()[0]).getName());
+                    final List<Match> listMatch = matchREST.getAllMatchByClubId(connectedUser.getClub().getId().intValue()).execute().body();
+                    for (int j=0;j<listMatch.size();j++) {
+                        matchList.add(listMatch.get(j));
                     }
-                    final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ListScorerActivity.this, android.R.layout.simple_list_item_1, scorersStr);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            listViewScorers.setAdapter(adapter);
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e("liste : ", listMatch.toString());
+                } catch (Exception e) {
+                    Log.e("PERSONNAL ERROR LOG", "Erreur : " + e.getMessage());
                 }
-
-
             }
-        });
+        };
+        Thread thread = new Thread(run);
         thread.start();
+
+        for (int i=0; i<10; i++) {
+            Match m = matchList.get(i);
+            Availability a = new Availability(connectedUser, m, true);
+        }
 
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,17 +99,14 @@ public class ListScorerActivity extends AppCompatActivity {
         closeMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
-                if (theMenu != null) {
-                    theMenu.setVisibility(View.INVISIBLE);
-                }
+                theMenu.setVisibility(View.INVISIBLE);
             }
         });
 
         navHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ListScorerActivity.this, MainActivity.class);
+                Intent i = new Intent(ListAvailibilityActivity.this, MainActivity.class);
                 startActivity(i);
                 LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
                 if (theMenu != null) {
@@ -132,7 +118,7 @@ public class ListScorerActivity extends AppCompatActivity {
         navScorers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ListScorerActivity.this, ListScorerActivity.class);
+                Intent i = new Intent(ListAvailibilityActivity.this, ListScorerActivity.class);
                 startActivity(i);
                 LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
                 if (theMenu != null) {
@@ -144,7 +130,7 @@ public class ListScorerActivity extends AppCompatActivity {
         navListMatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ListScorerActivity.this, ListMatchActivity.class);
+                Intent i = new Intent(ListAvailibilityActivity.this, ListMatchActivity.class);
                 startActivity(i);
                 LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
                 if (theMenu != null) {
@@ -156,7 +142,7 @@ public class ListScorerActivity extends AppCompatActivity {
         navMessages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ListScorerActivity.this, ListChannelActivity.class);
+                Intent i = new Intent(ListAvailibilityActivity.this, ListChannelActivity.class);
                 startActivity(i);
                 LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
                 if (theMenu != null) {
@@ -168,7 +154,7 @@ public class ListScorerActivity extends AppCompatActivity {
         navProfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ListScorerActivity.this, ProfilActivity.class);
+                Intent i = new Intent(ListAvailibilityActivity.this, ProfilActivity.class);
                 startActivity(i);
                 LinearLayout theMenu = (LinearLayout) findViewById(R.id.menuLeft);
                 if (theMenu != null) {
@@ -176,6 +162,5 @@ public class ListScorerActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 }
