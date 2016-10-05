@@ -23,3 +23,4 @@ public interface ScorerREST {
     @GET("/match/{idMatch}/scorers")
     Call<List<Scorer>> listScorerByMatch(@Path("idMatch") Integer idMatch);
 }
+

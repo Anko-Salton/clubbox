@@ -6,7 +6,9 @@ import com.clubbox.clubbox.model.Message;
 import java.util.List;
 
 import retrofit.Call;
+import retrofit.http.Field;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Path;
 
 /**
@@ -20,4 +22,6 @@ public interface ChannelREST {
     Call<List<Message>> getAllMessageFromChannel(@Path("idClub") Integer id, @Path("idChannel") Integer idChannel);
     @GET("/club/{idClub}/channels")
     Call<List<Channel>> getAllChannelFromClub(@Path("idClub") Integer id);
+    @POST("/club/{id}/channels/{idChannel}/postMessage")
+    Call<String> postMessage(@Path("idClub") Integer id, @Path("idChannel") Integer idChannel, @Field("idUser") Integer idUser, @Field("content")String content);
 }

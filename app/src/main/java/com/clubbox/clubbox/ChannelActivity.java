@@ -77,15 +77,15 @@ public class ChannelActivity extends AppCompatActivity {
 
         //On récupère le channel sélectionné précedement
         final Channel theChannel = (Channel) b.getSerializable("theChannel");
-
+        final ChannelREST channelREST = new Retrofit.Builder()
+                .baseUrl(ChannelREST.ENDPOINT)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(ChannelREST.class);
         Runnable run = new Runnable() {
             @Override
             public void run() {
-                ChannelREST channelREST = new Retrofit.Builder()
-                        .baseUrl(ChannelREST.ENDPOINT)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build()
-                        .create(ChannelREST.class);
+
                 final User connectedUser = Properties.getInstance().getConnectedUser();
                 try {
                     final List<Message> list = channelREST.getAllMessageFromChannel(connectedUser.getClub().getId().intValue(), theChannel.getId().intValue()).execute().body();
@@ -122,7 +122,23 @@ public class ChannelActivity extends AppCompatActivity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     //Si on appuie sur entrée, on envoie le message
-                    return sendChatMessage(theChannel);
+                    try{
+                        String ok = channelREST.postMessage(Properties.getInstance().getConnectedUser().getClub().getId().intValue()
+                                ,theChannel.getId()
+                                ,Properties.getInstance().getConnectedUser().getId()
+                                ,chatText.getText().toString()).execute().body();
+
+                        if(ok=="ok"){
+                            Message msg = new Message();
+                            msg.setContent(chatText.getText().toString());
+                            msg.setLeft(true);
+                            chatArrayAdapter.add(msg);
+                            chatText.setText("");
+                            side = !side;
+                        }
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
                 }
                 return false;
             }
@@ -232,12 +248,7 @@ public class ChannelActivity extends AppCompatActivity {
     private boolean sendChatMessage(Channel theChannel) {
         //Pour l'instant le message s'affiche uniquement mais n'est pas sauvegardé
         //TODO: Gérer l'envoie du message sur la base de donnée.
-        Message msg = new Message();
-        msg.setContent(chatText.getText().toString());
-        msg.setLeft(true);
-        chatArrayAdapter.add(msg);
-        chatText.setText("");
-        side = !side;
+
         return true;
     }
 }
