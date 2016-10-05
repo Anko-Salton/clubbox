@@ -20,7 +20,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".Acceuil"
             android:label="@string/title_activity_acceuil"
@@ -43,7 +43,8 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".ListScorerActivity"></activity>
+        <activity android:name=".ListScorerActivity" />
+        <activity android:name=".ListAvailibilityActivity"></activity>
     </application>
 
 </manifest>

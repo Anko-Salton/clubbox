@@ -48,4 +48,6 @@
     <string name="Messages">Messages</string>
     <string name="texte">Texte</string>
     <string name="Profil">Profil</string>
+    <string name="pr_sent">Présent</string>
+    <string name="LieuMatch">matchPlace</string>
 </resources>
