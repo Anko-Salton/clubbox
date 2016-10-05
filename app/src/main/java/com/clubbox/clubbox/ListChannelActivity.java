@@ -69,7 +69,7 @@ public class ListChannelActivity extends AppCompatActivity {
                         .build().create(ChannelREST.class);
                 try{
                     final List<Channel> channels = channelREST.getAllChannelFromClub(Properties.getInstance().getConnectedUser().getClub().getId().intValue()).execute().body();
-                    if (channels != null && channels.size() > 0) {
+                    if (channels.size() > 0) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
